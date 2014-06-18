@@ -18,6 +18,10 @@ public:
 		{
 			return ball_;
 		}
+	const sf::Vector2f& direction() const
+		{
+			return direction_;
+		}
 
 private:
 	void normalize();

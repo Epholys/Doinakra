@@ -97,9 +97,15 @@ void Game::update(const sf::Time& deltaTime)
 
 	sf::FloatRect ballBounds = ball_.ball().getGlobalBounds();
 	sf::Vector2f ballTransform (1.0f, 1.0f);
+	sf::Vector2f ballDirection = ball_.direction();
 	// detect collision of the ball with the window
-	if (window_.collideLeft(ballBounds) ||
-		window_.collideRight(ballBounds))
+	if (window_.collideLeft(ballBounds) &&
+		ballDirection.x < 0)
+	{
+		ballTransform.x = -1.0f;
+	}
+	else if (window_.collideRight(ballBounds) &&
+		ballDirection.x > 0)
 	{
 		ballTransform.x = -1.0f;
 	}
@@ -113,7 +119,8 @@ void Game::update(const sf::Time& deltaTime)
 	sf::Vector2f ballAddition (0.0f, 0.0f);
 	sf::FloatRect intersection;
 	float ballAcceleration = 0.0f;
-	if (playerBounds.intersects(ballBounds, intersection))
+	if (playerBounds.intersects(ballBounds, intersection) &&
+		ballDirection.y > 0)
 	{
 		float playerLength = playerBounds.width;
 		float playerMiddle = playerBounds.left + playerLength/2;
